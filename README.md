@@ -8,11 +8,11 @@
 
 ### Basic Test Execution
 ```bash
-mvn test                    # Run all tests
+mvn clean test                    # Run all tests
 mvn allure:serve            # Generate and serve Allure report locally
 
 # Run tests and immediately serve Allure report (blocks until you stop it)
-mvn test allure:serve   # Run tests and immediately serve Allure report (blocks until you stop it)
+mvn clean test allure:serve   # Run tests and immediately serve Allure report (blocks until you stop it)
 
 # Generate report without serving
 mvn allure:report           # Generate Allure HTML report

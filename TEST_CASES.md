@@ -293,25 +293,24 @@ mvn test -Dplaywright.timeout=60000
 
 ## Test Status & Notes
 
-| Test Case | Status | Notes |
-|-----------|--------|-------|
-| Test 1 - Ascending Price Sort | ⚠️ | Framework implemented correctly, but requires real application data for validation |
-| Test 2 - Descending Price Sort | ⚠️ | Framework implemented correctly, but requires real application data for validation |
-| Test 3 - Default Sort Options | ❌ | **FAILS** - Application shows 7 options instead of required 3 (price ⬆, price ⬇, newest) |
-| Test 4 - Sort After Search | ❌ | **FAILS** - Application shows 7 options instead of required 5 (price ⬆, price ⬇, newest, upcoming, relevant) |
+| Test Case                    | Status | Notes                                                                                                        |
+|------------------------------|--------|--------------------------------------------------------------------------------------------------------------|
+| TC-1 - Ascending Price Sort  | ✅ | **PASSES** - Framework correctly validates ascending price sorting                                           |
+| TC-2 - Descending Price Sort | ✅ | **PASSES** - Framework correctly validates descending price sorting                                          |
+| TC-3 - Default Sort Options  | ❌ | **FAILS** - Application shows 5 options instead of required 3 (price ⬆, price ⬇, newest)                     |
+| TC-4 - Sort After Search     | ❌ | **FAILS** - Application shows 6 options instead of required 5 (price ⬆, price ⬇, newest, upcoming, relevant) |
 
 ### Current Application Behavior (April 17, 2026)
-- **Actual default sort options**: `[newest, oldest, distance, £ → £££, £££ → £, relevance, upcoming]`
-- **Actual after-search sort options**: `[newest, oldest, distance, £ → £££, £££ → £, relevance, upcoming]`
+- **Actual default sort options**: `[newest, oldest, £ → £££, £££ → £, upcoming]`
+- **Actual after-search sort options**: `[newest, oldest, £ → £££, £££ → £, relevance, upcoming]`
 - **Expected default sort options**: `[£ → £££, £££ → £, newest]`
 - **Expected after-search sort options**: `[£ → £££, £££ → £, newest, upcoming, relevant]`
 
 ### Findings
 - **Tests are correct** and align with task requirements
-- **Application under construction** shows additional sort options not specified in requirements
+- **Application under construction** shows additional sort options not implemented yet
 - **Application needs updates** to limit sort options to only those required by the task
 - **Framework is robust** and will pass once application matches specifications
-- **Location-based testing** successfully implemented and working
 
 ### Recommendations
 1. Update application to show only required sort options
@@ -322,7 +321,6 @@ mvn test -Dplaywright.timeout=60000
 ---
 
 ## Future Enhancements
-
 - Add tests for additional sort types (location, date range)
 - Add tests for sorting with multiple filters
 - Add performance benchmarks for sort operations

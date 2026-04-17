@@ -3,6 +3,7 @@ package framework.pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitUntilState;
 import framework.config.TestConfig;
 import framework.core.DriverFactory;
 import framework.models.HousingResult;
@@ -26,7 +27,9 @@ public class HousingPage {
 
     public void open() {
         String url = TestConfig.getBaseUrl() + TestConfig.getSearchHousingPage() + TestConfig.getLanguageParams();
-        page.navigate(url);
+        page.navigate(url, new Page.NavigateOptions()
+                .setWaitUntil(WaitUntilState.DOMCONTENTLOADED));
+        page.locator(SEARCH_RESULT).first().waitFor();
     }
 
     private void clickSearchIconArrow() {
@@ -58,7 +61,7 @@ public class HousingPage {
         Locator items = page.locator(SEARCH_RESULT);
 
         // 1. Wait for at least one result
-        items.first().waitFor();
+        page.locator(SEARCH_RESULT).first().waitFor();
 
         List<HousingResult> results = new ArrayList<>();
 
@@ -66,6 +69,8 @@ public class HousingPage {
             String title = safeTextOptional(item.locator(A_POSTING_TITLE_SPAN_LABEL));
 
             // Skip items with empty titles
+            // TODO Discuss with Developer why there's an empty title result in last entry in List and if it should be fixed
+            //  on the application side instead of filtering it out here
             if (title.isEmpty()) {
                 continue;
             }
@@ -92,6 +97,7 @@ public class HousingPage {
 
     public void clickSearchButton() {
         page.locator(FORM).locator(BUTTON_TYPE_SUBMIT).click();
+        page.locator(SEARCH_RESULT).first().waitFor();
     }
 
     public void selectSortListBy(String sortBy) {
