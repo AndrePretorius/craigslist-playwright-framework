@@ -11,6 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HousingPage {
+    public static final String SEARCH_SORT_MODE_ICON_ICOM_ARROW = ".cl-search-sort-mode > .icon.icom-.arrow";
+    public static final String DIV_ITEMS_BUTTON = "div.items button";
+    public static final String SPAN_LABEL = "span.label";
+    public static final String SEARCH_HOUSING_STRING = "Search housing";
+    public static final String FORM = "form";
+    public static final String BUTTON_TYPE_SUBMIT = "button[type='submit']";
+    public static final String SEARCH_RESULT = ".cl-search-result";
+    public static final String A_POSTING_TITLE_SPAN_LABEL = "a.posting-title span.label";
+    public static final String SPAN_PRICEINFO = "span.priceinfo";
+    public static final String SPAN_RESULT_LOCATION = "span.result-location";
+
     Page page = DriverFactory.page();
 
     public void open() {
@@ -18,16 +29,20 @@ public class HousingPage {
         page.navigate(url);
     }
 
+    private void clickSearchIconArrow() {
+        page.locator(SEARCH_SORT_MODE_ICON_ICOM_ARROW).click();
+    }
+
     public List<String> getSortLabels() {
         // 1. Open dropdown first (adjust selector to your trigger)
-        page.locator(".cl-search-sort-mode > .icon.icom-.arrow").click();
+        clickSearchIconArrow();
 
         // 2. Wait for dropdown to appear
-        Locator sortItems = page.locator("div.items button");
+        Locator sortItems = page.locator(DIV_ITEMS_BUTTON);
         sortItems.first().waitFor();
 
         // 3. Extract labels
-        return sortItems.locator("span.label")
+        return sortItems.locator(SPAN_LABEL)
                 .allTextContents()
                 .stream()
                 .map(String::trim)
@@ -36,15 +51,11 @@ public class HousingPage {
     }
 
     public void fillSearchField(String searchText) {
-        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Search housing")).fill(searchText);
-    }
-
-    public void clickSearchButton() {
-        page.locator("form").locator("button[type='submit']").click();
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName(SEARCH_HOUSING_STRING)).fill(searchText);
     }
 
     public List<HousingResult> getSearchResults() {
-        Locator items = page.locator(".cl-search-result");
+        Locator items = page.locator(SEARCH_RESULT);
 
         // 1. Wait for at least one result
         items.first().waitFor();
@@ -52,7 +63,7 @@ public class HousingPage {
         List<HousingResult> results = new ArrayList<>();
 
         for (Locator item : items.all()) {
-            String title = safeTextOptional(item.locator("a.posting-title span.label"));
+            String title = safeTextOptional(item.locator(A_POSTING_TITLE_SPAN_LABEL));
 
             // Skip items with empty titles
             if (title.isEmpty()) {
@@ -61,8 +72,8 @@ public class HousingPage {
 
             results.add(new HousingResult(
                     title,
-                    safeTextOptional(item.locator("span.priceinfo")),
-                    safeTextOptional(item.locator("span.result-location"))
+                    safeTextOptional(item.locator(SPAN_PRICEINFO)),
+                    safeTextOptional(item.locator(SPAN_RESULT_LOCATION))
             ));
         }
 
@@ -79,8 +90,12 @@ public class HousingPage {
         }
     }
 
+    public void clickSearchButton() {
+        page.locator(FORM).locator(BUTTON_TYPE_SUBMIT).click();
+    }
+
     public void selectSortListBy(String sortBy) {
-        page.locator(".cl-search-sort-mode > .icon.icom-.arrow").click();
+        clickSearchIconArrow();
         page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(sortBy)).click();
     }
 

@@ -53,7 +53,6 @@ public class TestConfig {
         return getProperty("app.lang", "");
     }
 
-
     // Utility method to get property with default
     // Checks system properties first (via -D flag), then properties file, then default
     public static String getProperty(String key) {

@@ -6,8 +6,7 @@ import framework.pages.HousingPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Housing Page Sorting Tests")
 public class MadridCraigslistSortTest extends tests.BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(MadridCraigslistSortTest.class);
+
+    @AfterEach
+    public void tearDown(TestInfo testInfo) {
+        logger.info("Finished: " + testInfo.getTestMethod().get().getName());
+    }
 
     static {
         System.setProperty("app.location", "madrid");
