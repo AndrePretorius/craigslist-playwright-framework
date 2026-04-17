@@ -2,6 +2,7 @@ package tests;
 
 import framework.config.TestConfig;
 import framework.core.DriverFactory;
+import framework.utils.ScreenshotUtils;
 import io.qameta.allure.Allure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,16 +35,14 @@ public class BaseTest {
     @AfterEach
     void tearDown(TestInfo info) {
         try {
-            // Take screenshot before closing browser
-            byte[] screenshot = DriverFactory.page().screenshot();
-            // Save to target/screenshots
-            Path screenshotPath = Paths.get("target/screenshots/" + info.getDisplayName() + ".png");
-            Files.createDirectories(screenshotPath.getParent());
-            Files.write(screenshotPath, screenshot);
-            // Attach to Allure
-            Allure.addAttachment("Screenshot", "image/png", new ByteArrayInputStream(screenshot), "png");
+            // Take screenshot using the utility
+            byte[] screenshot = ScreenshotUtils.captureScreenshot(info.getDisplayName());
+            if (screenshot != null) {
+                // Attach to Allure
+                Allure.addAttachment("Screenshot", "image/png", new ByteArrayInputStream(screenshot), "png");
+            }
         } catch (Exception e) {
-            logger.error("Failed to take or save screenshot", e);
+            logger.error("Failed to take or attach screenshot", e);
         }
         DriverFactory.close();
         logger.info("Browser closed");

@@ -3,6 +3,7 @@ package tests.madrid;
 import framework.fixtures.TestFixtures;
 import framework.models.HousingResult;
 import framework.pages.HousingPage;
+import framework.utils.ScreenshotUtils;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -87,6 +88,10 @@ public class MadridCraigslistSortTest extends tests.BaseTest {
         );
         HousingPage housingPage = new HousingPage();
         housingPage.open();
+
+        // Example of using debug screenshots for troubleshooting
+        ScreenshotUtils.captureDebugScreenshot("after_opening_page");
+
         List<String> actualList = housingPage.getSortLabels();
 
         assertEquals(expectedList, actualList);
