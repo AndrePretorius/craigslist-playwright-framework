@@ -7,5 +7,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: '25' }
-      - run: mvn -B test
-      - run: mvn allure:report
+      - run: mvn -B test allure:report
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-report
+          path: target/allure-report/
