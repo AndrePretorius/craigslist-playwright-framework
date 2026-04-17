@@ -20,11 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MadridCraigslistSortTest extends tests.BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(MadridCraigslistSortTest.class);
 
-    @AfterEach
-    public void tearDown(TestInfo testInfo) {
-        logger.info("Finished: " + testInfo.getTestMethod().get().getName());
-    }
-
     static {
         System.setProperty("app.location", "madrid");
     }
